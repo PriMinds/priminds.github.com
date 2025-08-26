@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="assets/main_logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="src/styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <title>PriMinds</title>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('demo-form');
+            const submitBtn = document.getElementById('submit-button');
+            const thankYouMsg = document.getElementById('thank-you');
+            const openBtn = document.getElementById('open-modal');
+            const closeBtn = document.getElementById('close-modal');
+            const modal = document.getElementById('modal');
+            const overlay = document.getElementById('overlay');
+
+            openBtn.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+
+                form.classList.remove('hidden', 'opacity-0');
+                thankYouMsg.classList.add('hidden', 'opacity-0');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit';
+                form.reset(); // optional: clears input
+            });
+
+            const closeModal = () => {
+                modal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            };
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Disable button + show loading text
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+
+                const data = new FormData(form);
+                fetch("/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: new URLSearchParams(data).toString(),
+                })
+                    .then(() => {
+                        // Fade out form
+                        form.classList.add('opacity-0');
+                        setTimeout(() => {
+                            form.classList.add('hidden');
+                            thankYouMsg.classList.remove('hidden');
+                            thankYouMsg.classList.add('opacity-100');
+
+                            // Optional: auto-close modal after 3s
+                            setTimeout(() => {
+                                modal.classList.add('hidden');
+                                document.body.classList.remove('overflow-hidden');
+                            }, 3000);
+                        }, 300);
+                    })
+                    .catch(() => {
+                        alert('Something went wrong. Please try again.');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Submit';
+                    });
+            });
+
+            closeBtn.addEventListener('click', closeModal);
+            overlay.addEventListener('click', closeModal);
+        });
+    </script>
+  </head>
+    <body class="text-carbon">
+      <header class="sticky top-0 flex items-center justify-between px-6 h-16 bg-white shadow-sm">
+<!--          <h3 class="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-wide leading-tight">PriMinds</h3>-->
+        <a href="./"><img src="assets/main_logo.png" alt="" class="h-10 w-auto"></a>
+          <div class="sm:flex items-center font-semibold">
+          <nav class="space-x-12">
+            <a href="#" class="hover:underline underline-offset-4 decoration-runner-green-500 decoration-2">Home</a>
+            <a href="#features" class="hover:underline underline-offset-4 decoration-runner-green-500 decoration-2">Services</a>
+            <a href="#services" class="hover:underline underline-offset-4 decoration-runner-green-500 decoration-2">Partners</a>
+            <a href="#contact-us" class="hover:underline underline-offset-4 decoration-runner-green-500 decoration-2">Contact Us</a>
+          </nav>
+        </div>
+      </header>
+      <section class="h-[calc(100vh-4rem)] flex flex-col">
+        <div class="flex-1 flex items-center justify-between px-16 bg-white-100">
+          <div class="flex flex-col space-y-6 pb-16 text-left px-4 sm:px-6">
+            <p class="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-wide leading-tight">
+              PriMinds Services provides PMO consulting, Project Management Training, Mobile app development, and AI process automation
+            </p>
+            <p class="text-lg sm:text-xl md:text-2xl font-medium leading-relaxed">
+              Consulting company based in Metro Vancouver, Canada
+            </p>
+          </div>
+          <img src="assets/project_main.png" alt="Landing Illustration" class="hidden md:block w-full max-w-[40%] h-auto">
+        </div>
+      </section>
+
+      <section id="features" class="text-center px-4 pt-16 bg-white">
+        <h2 class="text-4xl font-bold mb-12">Our Services</h2>
+      
+        <div class="flex flex-wrap justify-center gap-4 max-w-5xl mx-auto">
+          <div class="w-70 p-6 text-center">
+                            <div class="flex justify-center gap-4 mb-4">
+                                <img src="assets/project_management.png" alt="Azure DevOps Icon" class="h-12 w-6">
+                                <img src="assets/p6_oracle.png" alt="Oracle P6 Icon" class="h-12 w-6">
+                                <img src="assets/jira_software.png" alt="Azure DevOps Icon" class="h-12 w-6">
+                                <img src="assets/azure_devops.png" alt="Planview Icon" class="h-12 w-6">
+                            </div>
+            <h3 class="text-xl font-semibold mb-2">Project Management Office</h3>
+               <p>PMO Set-up, Maturity Assessment</p>
+               <p>PMIS Tool</p>
+               <p>Integrated Program Planning</p>
+               <p>Benefits Realization Management</p>
+          </div>
+
+          <div class="w-70 p-6 text-center">
+            <img src="assets/expert_choice.png" alt="Expert Choice Icon" class="mx-auto mb-4 h-12 w-6">
+            <h3 class="text-xl font-semibold mb-2">Project Portfolio Management</h3>
+              <p>Project Intake</p>
+              <p>Business Relationship Management</p>
+          </div>
+
+<!--          <div class="w-70 p-6 text-center">-->
+<!--            <img src="assets/jira_software.png" alt="Jira Icon" class="mx-auto mb-4 h-12 w-6">-->
+<!--            <h3 class="text-xl font-semibold mb-2">Program Management</h3>-->
+<!--              <p>Integrated Program Planning</p>-->
+<!--              <p>Benefits Realization Management</p>-->
+<!--          </div>-->
+
+            <div class="w-70 p-6 text-center">
+                <img src="assets/risk_management.png" alt="Risk Management Icon" class="mx-auto mb-4 h-12 w-6">
+                <h3 class="text-xl font-semibold mb-2">Risk Management</h3>
+                <p>Monte Carlo Simulation</p>
+            </div>
+
+        </div>
+      </section>
+
+      <section id="features-2" class="text-center px-4 pt-16 bg-white">
+
+          <div class="flex flex-wrap justify-center gap-8 max-w-5xl mx-auto">
+<!--          <div class="w-70 p-6 text-center">-->
+<!--              <img src="assets/risk_management.png" alt="Risk Management Icon" class="mx-auto mb-4 h-12 w-6">-->
+<!--              <h3 class="text-xl font-semibold mb-2">Risk Management</h3>-->
+<!--              <p>Monte Carlo Simulation</p>-->
+<!--          </div>-->
+              <div class="w-70 p-6 text-center">
+<!--                  <img src="assets/project_management.png" alt="Project Management Icon" class="mx-auto mb-4 h-12 w-6">-->
+                  <h3 class="text-xl font-semibold mb-2">PM Training and Career Consulting</h3>
+                  <p>Project Management Training</p>
+                  <p>Project Management Career Consulting</p>
+              </div>
+
+              <div class="w-70 p-6 text-center">
+<!--                  <img src="assets/expert_choice.png" alt="Expert Choice Icon" class="mx-auto mb-4 h-12 w-6">-->
+                  <h3 class="text-xl font-semibold mb-2">AI & Mobile App Consulting</h3>
+                  <p>Artificial Intelligence (AI) Process Automation</p>
+                  <p>Mobile App Development</p>
+              </div>
+
+
+
+
+
+<!--          <div class="w-70 p-6 text-center">-->
+<!--              <div class="flex justify-center gap-4 mb-4">-->
+<!--                  <img src="assets/azure_devops.png" alt="Azure DevOps Icon" class="h-12 w-6">-->
+<!--                  <img src="assets/p6_oracle.png" alt="Oracle P6 Icon" class="h-12 w-6">-->
+<!--                  <img src="assets/planview.png" alt="Planview Icon" class="h-12 w-6">-->
+<!--              </div>-->
+<!--&lt;!&ndash;              <img src="assets/azure_devops.png" alt="Clipboard Icon" class="mx-auto mb-4 h-12 w-6">&ndash;&gt;-->
+<!--&lt;!&ndash;              <img src="assets/p6_oracle.png" alt="Clipboard Icon" class="mx-auto mb-4 h-12 w-6">&ndash;&gt;-->
+<!--              <h3 class="text-xl font-semibold mb-2">Others</h3>-->
+<!--              <p>PM Training and Career Consulting</p>-->
+<!--&lt;!&ndash;              <p>Project Management Career Consulting</p>&ndash;&gt;-->
+<!--              <p>Artificial Intelligence (AI) Process Automation</p>-->
+<!--              <p>Mobile App Development</p>-->
+<!--          </div>-->
+          </div>
+      </section>
+
+      <section id="services" class="pt-16 pb-36 bg-white px-4 sm:px-6">
+        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">Our Partners</h2>
+
+        <div class="flex flex-col lg:flex-row items-center justify-center gap-10 max-w-6xl mx-auto">
+          <!-- Service Card 1 -->
+          <div class="w-full max-w-sm bg-white-100 rounded-xl shadow-md text-center overflow-hidden">
+            <img src="assets/b_and_a.png" alt="Shopping Icon" class="mx-auto mb-4 w-8">
+            <div class="p-6">
+              <p><a href="https://www.baumann-associates.com/" target="_blank" rel="noopener noreferrer"
+            class="bg-runner-green-500 hover:bg-green-700 text-white font-medium py-2 px-6 rounded transition duration-200 text-center">
+            B & A Consulting
+          </a></p>
+            </div>
+          </div>
+
+          <!-- Service Card 2 -->
+          <div class="w-full max-w-sm bg-white-100 rounded-xl shadow-md text-center overflow-hidden">
+            <img src="assets/errunds.png" alt="Errands Icon" class="mx-auto mb-4 w-8">
+            <div class="p-6">
+              <p><a href="https://errunds-preview.netlify.app/#contact-us" target="_blank" rel="noopener noreferrer"
+            class="bg-runner-green-500 hover:bg-green-700 text-white font-medium py-2 px-6 rounded transition duration-200 text-center">
+            Runner Technologies
+          </a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact-us" class="flex flex-col items-center text-center bg-white-100 py-24 px-4 space-y-6">
+          <a href="mailto:minkenzie@hotmail.com"><img src="assets/lets_chat.png" alt="Shopping Icon" class="mx-auto mb-4 w-8"></a>
+      </section>
+
+      <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto text-center">
+          <p>© 2025 PriMinds Services Inc. All rights reserved</p>
+        </div>
+      </footer>
+
+      <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center hidden" style="background: rgba(0, 0, 0, 0.8);">
+        <div id="overlay" class="absolute inset-0"></div>
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm relative">
+          <button id="close-modal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          <h2 class="text-xl font-semibold mb-4">Request a Demo</h2>
+          <form name="demo-request" method="POST" data-netlify="true" netlify id="demo-form" class="transition-opacity duration-300">
+            <input type="hidden" name="form-name" value="demo-request" />
+
+            <input
+              type="email"
+              name="form-email"
+              placeholder="Please enter your email address"
+              class="w-full px-4 py-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            <button
+              type="submit"
+              id="submit-button"
+              class="w-full bg-runner-green-500 hover:bg-green-700 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+              Request
+            </button>
+          </form>
+
+          <p id="thank-you" class="hidden text-green-600 mt-4 text-center transition-opacity duration-300">🎉 Thanks! We’ll be in touch soon.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
